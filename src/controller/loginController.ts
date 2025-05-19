@@ -17,14 +17,14 @@ export class LoginController {
 
             res
             .cookie('accessToken', accessToken, {
-                httpOnly: false,
-                secure: false,
+                httpOnly: true,
+                secure: true,
                 sameSite: "lax",
                 maxAge: 15 * 60 * 60 * 1000
             })
             .cookie('refreshToken', refreshToken, {
-                httpOnly: false,
-                secure: false,
+                httpOnly: true,
+                secure: true,
                 sameSite: "lax",
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
@@ -44,14 +44,14 @@ export class LoginController {
 
             res
             .cookie('accessToken', accessToken, {
-                httpOnly: false,
-                secure: false,
+                httpOnly: true,
+                secure: true,
                 sameSite: "lax",
                 maxAge: 15 * 60 * 1000
             })
             .cookie('refreshToken', newRefreshToken, {
-                httpOnly: false,
-                secure: false,
+                httpOnly: true,
+                secure: true,
                 sameSite: "lax",
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
@@ -71,13 +71,13 @@ export class LoginController {
 
             res
             .clearCookie('accessToken', {
-                httpOnly: false,
-                secure: false,
+                httpOnly: true,
+                secure: true,
                 sameSite: "lax",
             })
             .clearCookie('refreshToken', {
-                httpOnly: false,
-                secure: false,
+                httpOnly: true,
+                secure: true,
                 sameSite: "lax",
             })
             .status(200)
