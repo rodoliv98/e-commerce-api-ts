@@ -19,13 +19,13 @@ export class LoginController {
             .cookie('accessToken', accessToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "lax",
+                sameSite: "none",
                 maxAge: 15 * 60 * 60 * 1000
             })
             .cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "lax",
+                sameSite: "none",
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
             .status(200)
@@ -46,13 +46,13 @@ export class LoginController {
             .cookie('accessToken', accessToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "lax",
+                sameSite: "none",
                 maxAge: 15 * 60 * 1000
             })
             .cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "lax",
+                sameSite: "none",
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
             .status(200)
@@ -73,12 +73,12 @@ export class LoginController {
             .clearCookie('accessToken', {
                 httpOnly: true,
                 secure: true,
-                sameSite: "lax",
+                sameSite: "none",
             })
             .clearCookie('refreshToken', {
                 httpOnly: true,
                 secure: true,
-                sameSite: "lax",
+                sameSite: "none",
             })
             .status(200)
             .json({ message: 'Deslogado com sucesso' });
