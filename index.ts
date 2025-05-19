@@ -10,13 +10,14 @@ import userAddressRoute from './src/routes/userAddressRoute.js';
 import adminRoute from './src/routes/adminRoute.js';
 import purchaseRoute from './src/routes/purchaseRoute.js';
 import historicRoute from './src/routes/historicRoute.js';
+import { rateLimit } from 'express-rate-limit';
 import { errorHandler } from "./src/middleware/errorHandler.js";
 import 'dotenv/config';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: process.env.PROD_URL,
     credentials: true,
 };
 
@@ -29,14 +30,21 @@ mongoose.connect(process.env.MONGO_URL as string)
         .then(() => console.log('Connected to MongoDB'))
         .catch((error) => console.log(error));
 
-app.use('/', loginRoute);
-app.use('/', registerRoute);
-app.use('/', productRoute);
-app.use('/user', userProfileRoute);
-app.use('/user', userAddressRoute);
-app.use('/admin', adminRoute);
-app.use('/', purchaseRoute);
-app.use('/user', historicRoute);
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 25,
+    message: 'Muitas requisições, tente novamente mais tarde'
+});
+
+app.use('/api/', apiLimiter);
+app.use('/api/v1', loginRoute);
+app.use('/api/v1', registerRoute);
+app.use('/api/v1', productRoute);
+app.use('/api/v1/user', userProfileRoute);
+app.use('/api/v1/user', userAddressRoute);
+app.use('/api/v1/admin', adminRoute);
+app.use('/api/v1', purchaseRoute);
+app.use('/api/v1/user', historicRoute);
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
