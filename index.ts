@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
+import authRoute from './src/routes/authRoute.js';
 import loginRoute from './src/routes/loginRoute.js';
 import registerRoute from './src/routes/registerRoute.js';
 import productRoute from './src/routes/productRoute.js';
@@ -37,6 +38,7 @@ const apiLimiter = rateLimit({
 });
 
 app.use('/api/', apiLimiter);
+app.use('/api/v1', authRoute);
 app.use('/api/v1', loginRoute);
 app.use('/api/v1', registerRoute);
 app.use('/api/v1', productRoute);
