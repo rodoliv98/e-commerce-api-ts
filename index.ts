@@ -32,8 +32,8 @@ mongoose.connect(process.env.MONGO_URL as string)
         .catch((error) => console.log(error));
 
 const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 25,
+    windowMs: 5 * 60 * 1000,
+    max: 100,
     message: 'Muitas requisições, tente novamente mais tarde'
 });
 
