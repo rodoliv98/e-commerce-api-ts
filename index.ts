@@ -18,11 +18,14 @@ import 'dotenv/config';
 const app = express();
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
-    origin: process.env.PROD_URL,
+    origin: process.env.NODE_ENV === 'production' ? process.env.PROD_URL : process.env.DEV_URL,
     credentials: true,
 };
 
-app.set('trust-proxy', true);
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust-proxy', true);
+}
+
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());

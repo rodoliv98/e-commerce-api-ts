@@ -17,15 +17,15 @@ export class LoginController {
 
             res
             .cookie('accessToken', accessToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                httpOnly: process.env.NODE_ENV === 'production' ? true : false,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
                 maxAge: 15 * 60 * 60 * 1000
             })
             .cookie('refreshToken', refreshToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                httpOnly: process.env.NODE_ENV === 'production' ? true : false,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
             .status(200)
@@ -44,15 +44,15 @@ export class LoginController {
 
             res
             .cookie('accessToken', accessToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                httpOnly: process.env.NODE_ENV === 'production' ? true : false,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
                 maxAge: 15 * 60 * 1000
             })
             .cookie('refreshToken', newRefreshToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                httpOnly: process.env.NODE_ENV === 'production' ? true : false,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
             .status(200)
@@ -71,14 +71,14 @@ export class LoginController {
 
             res
             .clearCookie('accessToken', {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                httpOnly: process.env.NODE_ENV === 'production' ? true : false,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
             })
             .clearCookie('refreshToken', {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                httpOnly: process.env.NODE_ENV === 'production' ? true : false,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
             })
             .status(200)
             .json({ message: 'Deslogado com sucesso' });
