@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.static('public'));
-mongoose.connect(process.env.MONGO_URL_DOCKER as string)
+mongoose.connect(process.env.MONGO_URL_PROD as string)
         .then(() => console.log('Connected to MongoDB'))
         .catch((error) => console.log(error));
 
