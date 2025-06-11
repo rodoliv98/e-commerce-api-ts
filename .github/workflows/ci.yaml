@@ -10,7 +10,7 @@ on:
 # Trabalhos que a pipeline vai fazer
 jobs:
   test:                           # nome do trabalho
-    runs_on: ubuntu-latest        # OS da VM
+    runs-on: ubuntu-latest        # OS da VM
 
     # Passos que serão executados na pipeline
     steps:
