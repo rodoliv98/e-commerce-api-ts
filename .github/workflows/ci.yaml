@@ -3,7 +3,7 @@ name: CI pipeline
 # Quando a pipeline vai executar. o ON é um trigger
 on:
   push:
-    branches: [master]
+    branches: [master, test-pipeline]
   pull_request:
     branches: [master]
 
@@ -32,4 +32,17 @@ jobs:
       # Passo 4: Executa testes
       -  name: Run tests
          run: npm test
-         
+  
+  # Job 2: Deploy
+  deploy:
+    # Só executa se o job test der certo
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' # só faz o deploy na branch principal
+
+    steps:
+      -  name: Deploy no Render
+         env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+         run: |
+          curl -X POST #RENDER_DEPLOY_HOOK_URL
