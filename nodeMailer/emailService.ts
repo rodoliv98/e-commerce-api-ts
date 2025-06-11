@@ -26,6 +26,7 @@ export const sendVerificationEmail = async (userEmail: string, token: string) =>
         console.log('Email sent successfully');
     } catch (err) {
         console.error('Error sending email:', err);
+        throw err;
     }
 };
 
@@ -44,5 +45,6 @@ export const sendRecoverPasswordEmail = async (userEmail: string, token: string)
         console.log('Email sent successfully');
     } catch (err) {
         console.error('Error sending email:', err);
+        throw err;
     }
 };

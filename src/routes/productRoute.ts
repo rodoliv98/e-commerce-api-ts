@@ -9,6 +9,11 @@ const repository = new ProductRepository();
 const service = new ProductService(repository);
 const controller = new ProductController(service);
 
+router.get('/test', (req, res) => {
+    console.log('hi');
+    res.status(200).send('hi');
+})
+
 router.get('/products', controller.findAll.bind(controller));
 
 router.get('/products/:id', controller.findById.bind(controller));

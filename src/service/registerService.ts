@@ -1,8 +1,8 @@
-import { IRegisterService } from './interfaces/registerServiceInterface.js';
-import { IUserRepository } from '../repository/interfaces/userRepoInterface.js';
-import { sendVerificationEmail, sendRecoverPasswordEmail } from '../../nodeMailer/emailService.js';
+import { IRegisterService } from './interfaces/registerServiceInterface';
+import { IUserRepository } from '../repository/interfaces/userRepoInterface';
+import { sendVerificationEmail, sendRecoverPasswordEmail } from '../../nodeMailer/emailService';
 import { CreateUserDTO } from '../../models/user.js';
-import { createToken, verifyToken } from '../utils/createToken.js';
+import { createToken, verifyToken } from '../utils/createToken';
 import bcrypt from 'bcrypt';
 
 export class RegisterService implements IRegisterService {

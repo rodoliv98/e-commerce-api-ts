@@ -17,10 +17,7 @@ export class ProductService implements IProductService {
     }
     
     async create(data: ProductDTO): Promise<IProduct> {
-        const product = await this.repository.create(data);
-        if (!product) throw new Error('Erro ao criar produto');
-        
-        return product;
+        return await this.repository.create(data);
     }
 
     async patch(id: string, data: ProductPatchDTO): Promise<IProduct> {

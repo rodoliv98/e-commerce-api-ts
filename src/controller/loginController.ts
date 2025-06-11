@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ILoginService } from '../service/interfaces/loginServiceInterface.js';
 import { z } from 'zod';
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
     email: z.string().email(),
     password: z.string().regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/)
 })

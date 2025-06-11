@@ -1,28 +1,19 @@
-import { CreatePurchaseDTO } from "../../models/purchase.js";
-import { IProductRepository } from "../repository/interfaces/productRepoInterface.js";
-import { getCartTotal } from "../utils/getCartTotal.js";
-import { IPurchaseRepository } from "../repository/interfaces/purchaseRepoInterface.js";
-import { reduceQuantityInDatabase } from "../utils/reduceQuantity.js";
-import { IPurchase } from "../../models/purchase.js";
-import { IPurchaseService } from "./interfaces/purchaseServiceInterface.js";
+import { CreatePurchaseDTO } from "../../models/purchase";
+import { getCartTotal } from "../utils/getCartTotal";
+import { IPurchaseRepository } from "../repository/interfaces/purchaseRepoInterface";
+import { reduceQuantityInDatabase } from "../utils/reduceQuantity";
+import { IPurchase } from "../../models/purchase";
+import { IPurchaseService } from "./interfaces/purchaseServiceInterface";
+import { checkIfProductExist } from "../utils/checkIfProductExist";
 
-interface repos {
-    product: IProductRepository;
-    purchase: IPurchaseRepository;
-}
 
 export class PurchaseService implements IPurchaseService {
-    constructor(private repos: repos) {}
+    constructor(private repo: IPurchaseRepository) {}
     
     async payment(data: CreatePurchaseDTO): Promise<IPurchase> {
-        for (let i = 0; i < data.cart.length; i++) {
-            const product = await this.repos.product.findById(data.cart[i].productId);
-            if (!product) throw new Error('Produto não encontrado');
-            if (product.price !== data.cart[i].price) throw new Error('Preço do produto não corresponde ao enviado');
-        }
-        
+        await checkIfProductExist(data);
         getCartTotal(data.cart, data.total);
-        const purchase = await this.repos.purchase.payment(data);
+        const purchase = await this.repo.payment(data);
         await reduceQuantityInDatabase(data.cart);
 
         return purchase;

@@ -1,5 +1,5 @@
-import { Product, IProduct, ProductDTO, ProductPatchDTO } from "../../models/product.js";
-import { IProductRepository } from "./interfaces/productRepoInterface.js";
+import { Product, IProduct, ProductDTO, ProductPatchDTO } from "../../models/product";
+import { IProductRepository } from "./interfaces/productRepoInterface";
 
 export class ProductRepository implements IProductRepository {
     async findAll(): Promise<IProduct[]> {
