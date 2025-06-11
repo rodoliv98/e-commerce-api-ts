@@ -1,0 +1,35 @@
+name: CI pipeline
+
+# Quando a pipeline vai executar. o ON é um trigger
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+# Trabalhos que a pipeline vai fazer
+jobs:
+  test:                           # nome do trabalho
+    runs_on: ubuntu-latest        # OS da VM
+
+    # Passos que serão executados na pipeline
+    steps:
+      # Passo 1: Baixa o código da branch
+      -  name: Checkout code
+         uses: actions/checkout@v4
+      
+      # Passo 2: Instala o Node.js na VM
+      -  name: Setup Node.js
+         uses: actions/setup-node@v4
+         with:
+          node-version: '18'
+          cache: 'npm'
+        
+      # Passo 3: Instala as deps do projeto
+      -  name: Install deps
+         run: npm ci
+
+      # Passo 4: Executa testes
+      -  name: Run tests
+         run: npm test
+         
