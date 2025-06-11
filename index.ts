@@ -30,9 +30,16 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.static('public'));
-mongoose.connect(process.env.MONGO_URL_PROD as string)
-        .then(() => console.log('Connected to MongoDB'))
-        .catch((error) => console.log(error));
+
+if (process.env.NODE_ENV === 'production') {
+    mongoose.connect(process.env.MONGO_URL_PROD as string)
+            .then(() => console.log('Connected to MongoDB'))
+            .catch((error) => console.log(error));
+} else {
+    mongoose.connect(process.env.MONGO_URL_DOCKER as string)
+            .then(() => console.log('Connected to MongoDB'))
+            .catch((error) => console.log(error));
+}
 
 const apiLimiter = rateLimit({
     windowMs: 5 * 60 * 1000,
