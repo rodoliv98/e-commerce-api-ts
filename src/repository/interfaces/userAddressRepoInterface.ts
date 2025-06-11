@@ -1,5 +1,4 @@
-import { IUserAddress } from "../../../models/userAddress";
-import { CreateUserAddressDTO, PatchUserAddressDTO } from "../../../models/userAddress";
+import { CreateUserAddressDTO, PatchUserAddressDTO, IUserAddress } from "../../../models/userAddress";
 
 export interface IUserAddressRepository {
     findAll(id: string): Promise<IUserAddress[]>;
