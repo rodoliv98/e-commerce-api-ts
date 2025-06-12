@@ -1,9 +1,5 @@
 name: CI pipeline
 
-permissions:
-  contents: write
-  workflows: write
-
 # Quando a pipeline vai executar. o ON é um trigger
 on:
   push:
@@ -92,7 +88,7 @@ jobs:
       - name: Rollback staging
         if: failure() && steps.staging_health_check.outcome == 'failure'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_FOR_ROLLBACK }}
           RENDER_STAGING_HOOK_URL: ${{ secrets.RENDER_STAGING_HOOK_URL }}
         run: |
           echo "Health check failed, initializing rollback"
