@@ -33,11 +33,11 @@ app.use(express.static('public'));
 
 if (process.env.NODE_ENV === 'production') {
     mongoose.connect(process.env.MONGO_URL_PROD as string)
-            .then(() => console.log('Connected to MongoDB'))
+            .then(() => console.log('Connected to MongoDB prod'))
             .catch((error) => console.log(error));
 } else {
     mongoose.connect(process.env.MONGO_URL_DOCKER as string)
-            .then(() => console.log('Connected to MongoDB'))
+            .then(() => console.log('Connected to MongoDB dev'))
             .catch((error) => console.log(error));
 }
 
