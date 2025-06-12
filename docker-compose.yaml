@@ -1,0 +1,39 @@
+services:
+  api:
+    build: .
+    container_name: my-api
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    env_file:
+      - ./.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["npm", "run", "docker:dev"]
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:7.0
+    container_name: my-mongo
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=senha
+      - MONGO_INITDB_DATABASE=banco
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:21017"
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
