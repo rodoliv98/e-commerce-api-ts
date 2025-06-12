@@ -10,7 +10,7 @@ router.get('/auth', (req, res) => {
 });
 
 router.get('/health', (req, res) => {
-    res.status(200).json({ status: 'alive', timeStamp: new Date() });
+    res.status(200).json({ status: 'working', timeStamp: new Date() });
 })
 
 export default router;
