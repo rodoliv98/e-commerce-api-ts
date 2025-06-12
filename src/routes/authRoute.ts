@@ -9,7 +9,7 @@ router.get('/auth', (req, res) => {
     return res.status(200).json({ message: 'Autenticado' });
 });
 
-router.get('/health', (req, res) => {
+router.get('/health2', (req, res) => {
     res.status(200).json({ status: 'working', timeStamp: new Date() });
 })
 
