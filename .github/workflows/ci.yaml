@@ -1,5 +1,9 @@
 name: CI pipeline
 
+permissions:
+  contents: write
+  workflows: write
+
 # Quando a pipeline vai executar. o ON é um trigger
 on:
   push:
@@ -39,9 +43,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop' && github.event_name == 'push' # só faz o deploy se for push na branch develop
     environment: staging
-    permissions:
-      contents: write
-      workflows: write
 
     steps:
       - name: Deploy to staging
