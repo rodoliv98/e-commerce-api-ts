@@ -61,7 +61,7 @@ jobs:
       - name: Health check staging
         id: staging_health_check
         env:
-          STAGING_URL: ${{ secrets.STAGING_URL || https://e-commerce-api-staging.onrender.com }}
+          STAGING_URL: ${{ secrets.STAGING_URL || 'https://e-commerce-api-staging.onrender.com' }}
         run: |
           echo "Checking aplication's health"
           
