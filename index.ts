@@ -47,7 +47,7 @@ const apiLimiter = rateLimit({
     message: 'Muitas requisições, tente novamente mais tarde'
 });
 
-app.use('/api/', apiLimiter);
+app.use('/', apiLimiter);
 app.use('/api/v1', authRoute);
 app.use('/api/v1', loginRoute);
 app.use('/api/v1', registerRoute);

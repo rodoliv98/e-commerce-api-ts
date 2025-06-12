@@ -33,11 +33,14 @@ jobs:
       -  name: Run tests
          run: npm test
   
+  # Job 2: Deploy-Staging (só roda se a condição do if bater)
   deploy-staging:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop' && github.event_name == 'push' # só faz o deploy se for push na branch develop
-    evironment: staging
+    environment: staging
+    permissions:
+      contents: write
 
     steps:
       -  name: Deploy to staging
@@ -48,7 +51,58 @@ jobs:
           curl -X POST $RENDER_STAGING_HOOK_URL
           echo "✅ Staging deploy initiated"
 
-  # Job 2: Deploy
+        # Espera o deploy completar para seguir com o próximo passo
+      - name: Wait for deployment to complete
+        run: |
+          echo "Waiting for deployment"
+          sleep 90
+        
+        # Checagem da aplicação
+      - name: Health check staging
+        id: staging_health_check
+        env:
+          STAGING_URL: ${{ secrets.STAGING_URL || https://e-commerce-api-staging.onrender.com }}
+        run: |
+          echo "Checking aplication's health"
+          
+          for i in {1..3}; do
+            echo "attempt $i/3..."
+            if curl -f -s --max-time 30 "$STAGING_URL/health" || curl -f -s --max-time 30 "$STAGING_URL/"; then
+              echo "Staging health check passed"
+              exit 0
+            fi
+            sleep 10
+          done
+          
+          echo "Health check failed after 3 attempts"
+          exit 1
+      
+      # Baixa o código pra VM apenas se o health check falhar
+      - name: Checkout code for rollback
+        if: failure() && steps.staging_health_check.outcome == 'failure'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      # Rollback se der falha no passo anterior
+      - name: Rollback staging
+        if: failure() && steps.staging_health_check.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RENDER_STAGING_HOOK_URL: ${{ secrets.RENDER_STAGING_HOOK_URL }}
+        run: |
+          echo "Health check failed, initializing rollback"
+
+          git revert --no-edit #{{ github.sha }}
+          git push origin develop
+
+          sleep 20
+          echo "Starting rollback deploy"
+          curl -X POST $RENDER_STAGING_HOOK_URL
+
+          echo "Rollback done, previous version failed while deployed"
+
+  # Job 2: Deploy-Prod (só roda se a condição do if bater)
   deploy-prod:
     # Só executa se o job test der certo
     needs: test

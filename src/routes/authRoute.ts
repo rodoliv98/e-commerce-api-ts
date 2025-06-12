@@ -9,8 +9,8 @@ router.get('/auth', (req, res) => {
     return res.status(200).json({ message: 'Autenticado' });
 });
 
-router.get('/status', (req, res) => {
-    res.sendStatus(200);
+router.get('/health', (req, res) => {
+    res.status(200).json({ status: 'alive', timeStamp: new Date() });
 })
 
 export default router;
