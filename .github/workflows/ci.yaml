@@ -93,6 +93,9 @@ jobs:
         run: |
           echo "Health check failed, initializing rollback"
 
+          git config --global user.email "rdgoliv18@gmail.com"
+          git config --global user.name "rodoliv98"
+
           git revert --no-edit ${{ github.sha }}
           git push origin develop
 
