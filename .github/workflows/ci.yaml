@@ -43,8 +43,8 @@ jobs:
       contents: write
 
     steps:
-      -  name: Deploy to staging
-         env:
+      - name: Deploy to staging
+        env:
           RENDER_STAGING_HOOK_URL: ${{ secrets.RENDER_STAGING_HOOK_URL }}
         run: |
           echo "Deploying to STAGING environment..."
