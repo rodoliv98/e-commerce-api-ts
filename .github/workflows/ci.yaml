@@ -3,16 +3,16 @@ name: CI pipeline
 # Quando a pipeline vai executar. o ON é um trigger
 on:
   push:
-    branches: [master, test-pipeline]
+    branches: [master, develop]
   pull_request:
-    branches: [master]
+    branches: [master, develop]
 
-# Trabalhos que a pipeline vai fazer
+# Jobs que a pipeline vai fazer
 jobs:
-  test:                           # nome do trabalho
+  test:                           # nome do Job
     runs-on: ubuntu-latest        # OS da VM
 
-    # Passos que serão executados na pipeline
+    # Passos que serão executados nesse Job
     steps:
       # Passo 1: Baixa o código da branch
       -  name: Checkout code
@@ -33,16 +33,36 @@ jobs:
       -  name: Run tests
          run: npm test
   
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push' # só faz o deploy se for push na branch develop
+    evironment: staging
+
+    steps:
+      -  name: Deploy to staging
+         env:
+          RENDER_STAGING_HOOK_URL: ${{ secrets.RENDER_STAGING_HOOK_URL }}
+        run: |
+          echo "Deploying to STAGING environment..."
+          curl -X POST $RENDER_STAGING_HOOK_URL
+          echo "✅ Staging deploy initiated"
+
   # Job 2: Deploy
-  deploy:
+  deploy-prod:
     # Só executa se o job test der certo
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' # só faz o deploy na branch principal
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push' # só faz o deploy se for push(não PR) na branch master
+    environment:
+      name: production
+      url: https://e-commerce-api-ts.onrender.com
 
     steps:
       -  name: Deploy no Render
          env:
-          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          RENDER_PROD_HOOK_URL: ${{ secrets.RENDER_PROD_HOOK_URL }}
          run: |
-          curl -X POST $RENDER_DEPLOY_HOOK_URL
+          echo "Deploying to PRODUCTION environment..."
+          curl -X POST $RENDER_PROD_HOOK_URL
+          echo "🚀 Production deploy initiated"
