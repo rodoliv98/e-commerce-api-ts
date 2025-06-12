@@ -93,7 +93,7 @@ jobs:
         run: |
           echo "Health check failed, initializing rollback"
 
-          git revert --no-edit #{{ github.sha }}
+          git revert --no-edit ${{ github.sha }}
           git push origin develop
 
           sleep 20
