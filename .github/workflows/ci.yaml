@@ -43,6 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop' && github.event_name == 'push' # só faz o deploy se for push na branch develop
     environment: staging
+    permissions:
+      contents: write
 
     steps:
       - name: Deploy to staging
