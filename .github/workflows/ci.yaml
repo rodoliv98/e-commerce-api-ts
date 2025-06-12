@@ -41,6 +41,7 @@ jobs:
     environment: staging
     permissions:
       contents: write
+      workflows: write
 
     steps:
       - name: Deploy to staging
@@ -100,9 +101,9 @@ jobs:
           git push origin develop
 
           sleep 20
+
           echo "Starting rollback deploy"
           curl -X POST $RENDER_STAGING_HOOK_URL
-
           echo "Rollback done, previous version failed while deployed"
 
   # Job 2: Deploy-Prod (só roda se a condição do if bater)
