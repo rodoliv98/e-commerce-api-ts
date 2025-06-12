@@ -67,7 +67,7 @@ jobs:
           
           for i in {1..3}; do
             echo "attempt $i/3..."
-            if curl -f -s --max-time 30 "$STAGING_URL/health" || curl -f -s --max-time 30 "$STAGING_URL/"; then
+            if curl -f -s --max-time 30 "$STAGING_URL/api/v1/health" || curl -f -s --max-time 30 "$STAGING_URL/"; then
               echo "Staging health check passed"
               exit 0
             fi
@@ -82,7 +82,7 @@ jobs:
         if: failure() && steps.staging_health_check.outcome == 'failure'
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       # Rollback se der falha no passo anterior
       - name: Rollback staging
