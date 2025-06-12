@@ -1,4 +1,4 @@
-name: CI pipeline
+name: CI pipeline render
 
 # Quando a pipeline vai executar. o ON é um trigger
 on:
